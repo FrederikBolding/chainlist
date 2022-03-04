@@ -16,8 +16,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@chakra-ui/gatsby-plugin": "^2.0.4",
+    "@chakra-ui/react": "^1.8.6",
     "@emotion/react": "^11.8.1",
     "@emotion/styled": "^11.8.1",
+    "framer-motion": "^6.2.8",
     "gatsby": "^4.9.0",
     "gatsby-plugin-emotion": "^7.9.0",
     "gatsby-plugin-react-helmet": "^5.9.0",
