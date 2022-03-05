@@ -6,16 +6,24 @@ import { Search } from "./Search";
 export const Header = (props) => {
   const { handleConnect, isConnected, address } = useContext(Web3Context);
   return (
-    <Flex pb="2" justifyContent="space-between">
+    <Flex
+      pb="2"
+      flexDirection={{ base: "column", md: "row" }}
+      justifyContent="space-between"
+    >
       <Heading>Chainlist</Heading>
       <Search {...props} />
       <Box>
         {!isConnected ? (
-          <Button size="lg" onClick={handleConnect}>
+          <Button
+            w={{ base: "100%", md: "auto" }}
+            size="lg"
+            onClick={handleConnect}
+          >
             Connect Wallet
           </Button>
         ) : (
-          <Button size="lg">
+          <Button size="lg" w={{ base: "100%", md: "auto" }}>
             <Text fontSize="sm" isTruncated>
               {address}
             </Text>

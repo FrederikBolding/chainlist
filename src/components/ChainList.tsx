@@ -9,11 +9,9 @@ export const ChainList = ({
   chains: (ChainData & { id: string })[];
 }) => (
   <>
-    <SimpleGrid columns={3} gap={4}>
+    <SimpleGrid minChildWidth="300px" spacing={4}>
       {chains.map((c) => (
-        <GridItem key={c.id}>
-          <Chain {...c} />
-        </GridItem>
+          <Chain key={c.id} {...c} />
       ))}
     </SimpleGrid>
   </>
