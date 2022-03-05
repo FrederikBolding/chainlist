@@ -3,11 +3,16 @@ import React, { useContext } from "react";
 import { Web3Context } from "../context/Web3Context";
 import { ChainData } from "../types/chain";
 
-export const Chain = ({ name, chainId, chain, ...rest }: ChainData) => {
+export const Chain = ({
+  name,
+  chainId,
+  nativeCurrency,
+  ...rest
+}: ChainData) => {
   const { isConnected, handleConnect, handleAddChain } =
     useContext(Web3Context);
   const handleAddChainClick = () => {
-    handleAddChain({ name, chainId, chain, ...rest });
+    handleAddChain({ name, chainId, nativeCurrency, ...rest });
   };
   return (
     <Box p="5" borderWidth="1px" borderRadius="5px">
@@ -25,7 +30,7 @@ export const Chain = ({ name, chainId, chain, ...rest }: ChainData) => {
             <Badge>ChainID: {chainId}</Badge>
           </Flex>
           <Flex justifyContent="flex-end">
-            <Badge>Currency: {chain}</Badge>
+            <Badge>Currency: {nativeCurrency.symbol}</Badge>
           </Flex>
         </Flex>
       </Flex>
