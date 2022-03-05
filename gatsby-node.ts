@@ -1,14 +1,8 @@
 import { GatsbyNode } from "gatsby";
 import fetch from "node-fetch";
-
-// @todo flesh out
-interface ChainData {
-  name: string;
-  chain: string;
-  icon: string;
-  rpc: string[];
-  chainId: number;
-}
+import path from "path";
+import webpack from "webpack";
+import { ChainData } from "./src/types/chain";
 
 export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   actions,
@@ -31,5 +25,30 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
       },
     };
     createNode(node);
+  });
+};
+
+// https://github.com/WalletConnect/walletconnect-monorepo/issues/584
+export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
+  actions,
+}) => {
+  actions.setWebpackConfig({
+    plugins: [
+      new webpack.ProvidePlugin({
+        Buffer: ["buffer", "Buffer"],
+      }),
+    ],
+    resolve: {
+      fallback: {
+        util: path.resolve(`./node_modules/util/`),
+        url: path.resolve(`./node_modules/url/`),
+        assert: path.resolve(`./node_modules/assert/`),
+        crypto: path.resolve(`./node_modules/crypto-browserify`),
+        os: path.resolve(`./node_modules/os-browserify/browser`),
+        https: path.resolve(`./node_modules/https-browserify`),
+        http: path.resolve(`./node_modules/stream-http`),
+        stream: path.resolve(`./node_modules/stream-browserify`),
+      },
+    },
   });
 };

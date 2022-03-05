@@ -1,11 +1,27 @@
-import { Button, Box, Heading, Flex } from "@chakra-ui/react";
-import React from "react";
+import { Button, Heading, Flex, Text, Avatar, Box } from "@chakra-ui/react";
+import React, { useContext } from "react";
+import { Web3Context } from "../context/Web3Context";
 import { Search } from "./Search";
 
-export const Header = (props) => (
-  <Flex pb="2" justifyContent="space-between">
-    <Heading>Chainlist</Heading>
-    <Search {...props} />
-    <Button size="lg">Connect Wallet</Button>
-  </Flex>
-);
+export const Header = (props) => {
+  const { handleConnect, isConnected, address } = useContext(Web3Context);
+  return (
+    <Flex pb="2" justifyContent="space-between">
+      <Heading>Chainlist</Heading>
+      <Search {...props} />
+      <Box>
+        {!isConnected ? (
+          <Button size="lg" onClick={handleConnect}>
+            Connect Wallet
+          </Button>
+        ) : (
+          <Button size="lg">
+            <Text fontSize="sm" isTruncated>
+              {address}
+            </Text>
+          </Button>
+        )}
+      </Box>
+    </Flex>
+  );
+};
