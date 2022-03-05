@@ -1,30 +1,26 @@
 import { GatsbyNode } from "gatsby";
-import fetch from "node-fetch";
 import path from "path";
 import webpack from "webpack";
-import { ChainData } from "./src/types/chain";
+import { createRemoteFileNode } from "gatsby-source-filesystem";
 
-export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
+export const sourceNodes: GatsbyNode['sourceNodes'] = async ({
   actions,
   createNodeId,
-  createContentDigest,
+  store,
+  cache,
+  reporter
 }) => {
   const { createNode } = actions;
-  const response = await fetch("https://chainid.network/chains.json");
-  const data = (await response.json()) as ChainData[];
-  data.forEach((chain) => {
-    const node = {
-      ...chain,
-      parent: null,
-      children: [],
-      id: createNodeId(`chain__${chain.chainId}`),
-      internal: {
-        type: "Chain",
-        content: JSON.stringify(chain),
-        contentDigest: createContentDigest(chain),
-      },
-    };
-    createNode(node);
+
+  await createRemoteFileNode({
+    url: "https://chainid.network/chains.json",
+    createNode,
+    createNodeId,
+    store,
+    cache,
+    reporter,
+    name: "chains",
+    ext: ".json"
   });
 };
 

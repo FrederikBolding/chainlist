@@ -9,6 +9,17 @@ module.exports = {
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-netlify",
     {
+      // For `gatsby-transformer-json` to work, `gatsby-source-filesystem` needs to be loaded. This
+      // plugin requires a specific folder to be set however, so here we just specify the pages
+      // folder as a dummy folder.
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'pages',
+        path: 'src/pages'
+      }
+    },
+    "gatsby-transformer-json",
+    {
       resolve: "@chakra-ui/gatsby-plugin",
       options: {
         /**
