@@ -1,8 +1,10 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import React, { createContext, useEffect, useState } from "react";
-import Web3Modal from "web3modal";
 import { Web3Provider as EthersWeb3 } from "@ethersproject/providers";
 import { ChainData } from "../types/chain";
+
+// Hack to fix build
+const Web3Modal = typeof window !== `undefined` ? require("web3modal") : null;
 
 export const Web3Context = createContext({});
 
@@ -18,10 +20,12 @@ export const Web3Provider = ({ children }) => {
     },
   };
 
-  const web3Modal = new Web3Modal({
-    cacheProvider: true, // optional
-    providerOptions, // required
-  });
+  const web3Modal =
+    Web3Modal &&
+    new Web3Modal.default({
+      cacheProvider: true, // optional
+      providerOptions, // required
+    });
 
   const handleConnect = () => {
     web3Modal.connect().then(setWeb3);
