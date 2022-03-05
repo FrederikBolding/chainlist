@@ -1,6 +1,7 @@
 import { Button, Heading, Flex, Text, Avatar, Box } from "@chakra-ui/react";
 import React, { useContext } from "react";
 import { Web3Context } from "../context/Web3Context";
+import { DarkModeToggle } from "./DarkModeToggle";
 import { Search } from "./Search";
 
 export const Header = (props) => {
@@ -13,7 +14,8 @@ export const Header = (props) => {
     >
       <Heading>Chainlist</Heading>
       <Search {...props} />
-      <Box>
+      <Flex>
+        <DarkModeToggle size="lg" mr="1" />
         {!isConnected ? (
           <Button
             w={{ base: "100%", md: "auto" }}
@@ -29,7 +31,7 @@ export const Header = (props) => {
             </Text>
           </Button>
         )}
-      </Box>
+      </Flex>
     </Flex>
   );
 };
