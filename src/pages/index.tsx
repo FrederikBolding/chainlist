@@ -3,6 +3,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import React, { useState } from "react";
 import { ChainList } from "../components/ChainList";
 import { Header } from "../components/Header";
+import { Seo } from "../components/SEO";
 import { Web3Provider } from "../context/Web3Context";
 
 const IndexPage = () => {
@@ -43,6 +44,7 @@ const IndexPage = () => {
 
   return (
     <Web3Provider>
+      <Seo />
       <Box pt="4" px="8">
         <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <ChainList chains={filteredChains} />
