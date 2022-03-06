@@ -8,31 +8,29 @@ import { Web3Provider } from "../context/Web3Context";
 const IndexPage = () => {
   const rawData = useStaticQuery(graphql`
     query ChainsQuery {
-      allChain {
-        edges {
-          node {
-            id
+      allChainsJson {
+        nodes {
+          id
+          name
+          chain
+          chainId
+          rpc
+          icon
+          nativeCurrency {
+            decimals
             name
-            chain
-            chainId
-            rpc
-            icon
-            nativeCurrency {
-              decimals
-              name
-              symbol
-            }
-            explorers {
-              url
-              name
-              standard
-            }
+            symbol
+          }
+          explorers {
+            url
+            name
+            standard
           }
         }
       }
     }
   `);
-  const chains = rawData.allChain.edges.map((n) => n.node);
+  const chains = rawData.allChainsJson.nodes;
   const [searchQuery, setSearchQuery] = useState("");
   const filteredChains =
     searchQuery.length > 0
