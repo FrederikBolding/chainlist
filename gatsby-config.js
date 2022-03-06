@@ -1,8 +1,11 @@
 /** @type {import('gatsby').GatsbyConfig} */
 module.exports = {
   siteMetadata: {
-    title: ``,
-    siteUrl: `https://www.yourdomain.tld`,
+    title: `Chainlist`,
+    siteUrl: `https://evm-chainlist.netlify.app/`,
+    author: "@frederikbolding",
+    description:
+      "A list of EVM-based chains that also allows you to add chains to your favorite Web3 wallet.",
   },
   plugins: [
     "gatsby-plugin-emotion",
