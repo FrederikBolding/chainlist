@@ -36,10 +36,11 @@ const IndexPage = () => {
   const filteredChains =
     searchQuery.length > 0
       ? chains.filter(
-          (chain) =>
-            chain.name.toLowerCase().includes(searchQuery) ||
-            chain.chainId.toString().includes(searchQuery)
-        )
+        (chain) =>
+          chain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          chain.chainId.toString().includes(searchQuery) ||
+          chain.nativeCurrency.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+      )
       : chains;
 
   return (
