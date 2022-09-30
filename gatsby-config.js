@@ -22,6 +22,9 @@ module.exports = {
       }
     },
     "gatsby-transformer-json",
+    "gatsby-plugin-sharp",
+    "gatsby-plugin-image",
+    "gatsby-transformer-sharp",
     {
       resolve: "@chakra-ui/gatsby-plugin",
       options: {
