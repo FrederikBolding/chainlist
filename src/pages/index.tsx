@@ -46,7 +46,7 @@ const IndexPage = () => {
   return (
     <Web3Provider>
       <Seo />
-      <Box pt="4" px="8">
+      <Box py="4" px="8">
         <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
         <ChainList chains={filteredChains} />
       </Box>

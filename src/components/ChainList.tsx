@@ -1,4 +1,4 @@
-import { GridItem, SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import React from "react";
 import { ChainData } from "../types/chain";
 import { Chain } from "./Chain";
