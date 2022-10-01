@@ -3,5 +3,5 @@ shouldDeploy=$(curl -s https://api.github.com/repos/ethereum-lists/chains/commit
 
 if [ shouldDeploy = "0" ]
 then
-  curl -X POST -d '{}' https://api.netlify.com/build_hooks/$1 
+  curl -X POST -d '{}' https://api.netlify.com/build_hooks/${BUILD_HOOK}
 fi

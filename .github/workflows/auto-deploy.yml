@@ -16,4 +16,4 @@ jobs:
         shell: bash
         env:
           BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-        run: ./scripts/check-deploy.sh "$BUILD_HOOK"
+        run: ./scripts/check-deploy.sh
