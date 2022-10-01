@@ -1,8 +1,6 @@
 name: Auto Deploy
 
 on:
-  push:
-  workflow_dispatch:
   schedule:
     - cron:  '0 0 * * *'
 
