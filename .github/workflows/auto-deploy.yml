@@ -13,6 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Check if deployment is needed
+        shell: bash
         env:
           BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
-        run: ./scripts/check-deploy.sh "$BUILD_HOOK"
+        run: ${{ github.action_path }}/scripts/check-deploy.sh "$BUILD_HOOK"
