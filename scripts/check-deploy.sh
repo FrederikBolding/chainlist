@@ -6,4 +6,6 @@ if [ shouldDeploy = "0" ]
 then
   echo "Deploying..."
   curl -X POST -d '{}' https://api.netlify.com/build_hooks/${BUILD_HOOK}
+else
+  echo "No deploy needed"
 fi
