@@ -5,13 +5,14 @@ import { Chain } from "./Chain";
 
 export const ChainList = ({
   chains,
+  icons,
 }: {
   chains: (ChainData & { id: string })[];
 }) => (
   <>
     <SimpleGrid minChildWidth="300px" spacing={4}>
       {chains.map((c) => (
-          <Chain key={c.id} {...c} />
+        <Chain key={c.id} {...c} icon={icons[c.icon]} />
       ))}
     </SimpleGrid>
   </>

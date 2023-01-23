@@ -29,18 +29,41 @@ const IndexPage = () => {
           }
         }
       }
+      allImageSharp {
+        nodes {
+          id
+          gatsbyImageData(width: 40)
+          original {
+            width
+            height
+            src
+          }
+          fluid {
+            originalName
+          }
+        }
+      }
     }
   `);
+
   const chains = rawData.allChainsJson.nodes;
+  const icons = rawData.allImageSharp.nodes.reduce((acc, node) => {
+    return {
+      ...acc,
+      [node.fluid.originalName.split(".")[0]]: node.gatsbyImageData,
+    };
+  }, {});
   const [searchQuery, setSearchQuery] = useState("");
   const filteredChains =
     searchQuery.length > 0
       ? chains.filter(
-        (chain) =>
-          chain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          chain.chainId.toString().includes(searchQuery) ||
-          chain.nativeCurrency.symbol.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+          (chain) =>
+            chain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            chain.chainId.toString().includes(searchQuery) ||
+            chain.nativeCurrency.symbol
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase())
+        )
       : chains;
 
   return (
@@ -48,7 +71,7 @@ const IndexPage = () => {
       <Seo />
       <Box py="4" px="8">
         <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        <ChainList chains={filteredChains} />
+        <ChainList chains={filteredChains} icons={icons} />
       </Box>
     </Web3Provider>
   );
