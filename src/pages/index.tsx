@@ -9,7 +9,7 @@ import { Web3Provider } from "../context/Web3Context";
 const IndexPage = () => {
   const rawData = useStaticQuery(graphql`
     query ChainsQuery {
-      allChainsJson {
+      allChain {
         nodes {
           id
           name
@@ -33,24 +33,23 @@ const IndexPage = () => {
         nodes {
           id
           gatsbyImageData(width: 40, placeholder: NONE)
-          original {
-            width
-            height
-            src
-          }
-          fluid {
-            originalName
+          parent {
+            id
+            ... on File {
+              id
+              name
+            }
           }
         }
       }
     }
   `);
 
-  const chains = rawData.allChainsJson.nodes;
+  const chains = rawData.allChain.nodes;
   const icons = rawData.allImageSharp.nodes.reduce((acc, node) => {
     return {
       ...acc,
-      [node.fluid.originalName.split(".")[0]]: node.gatsbyImageData,
+      [node.parent.name]: node.gatsbyImageData,
     };
   }, {});
   const [searchQuery, setSearchQuery] = useState("");
