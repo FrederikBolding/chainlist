@@ -7,44 +7,59 @@ import fetch from "node-fetch";
 export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
   actions,
   createNodeId,
+  createContentDigest,
   store,
   cache,
   reporter,
 }) => {
   const { createNode } = actions;
 
-  await createRemoteFileNode({
-    url: "https://chainid.network/chains.json",
-    createNode,
-    createNodeId,
-    store,
-    cache,
-    reporter,
-    name: "chains",
-    ext: ".json",
-  });
+  const chains = await fetch("https://chainid.network/chains.json").then(
+    (response) => response.json()
+  );
 
   const icons = await fetch("https://chainid.network/chain_icons.json").then(
     (response) => response.json()
   );
 
-  await Promise.all(
-    icons.map((icon) => {
-      const iconName = icon.name;
-      const iconFile = icon.icons?.[0];
-      const cid = iconFile.url.slice(7);
-      return createRemoteFileNode({
-        url: `https://chainid.network/iconsDownload/${cid}`,
-        createNode,
-        createNodeId,
-        store,
-        cache,
-        reporter,
-        name: iconName,
-        ext: `.${iconFile.format}`,
-      }).catch(() => null);
-    })
-  );
+  const iconFiles = await icons.reduce(async (previousPromise, icon) => {
+    const iconName = icon.name;
+    const iconFile = icon.icons?.[0];
+    const cid = iconFile.url.slice(7);
+    const result = await createRemoteFileNode({
+      url: `https://chainid.network/iconsDownload/${cid}`,
+      createNode,
+      createNodeId,
+      store,
+      cache,
+      reporter,
+      name: iconName,
+      ext: `.${iconFile.format}`,
+    }).catch(() => null);
+    const acc = await previousPromise;
+    if (result) {
+      acc[iconName] = result;
+    }
+    return acc;
+  }, Promise.resolve({}));
+
+  chains.forEach((chain) => {
+    const icon = chain.icon;
+    const iconCid = iconFiles[icon]?.name;
+    const node = {
+      ...chain,
+      icon: iconCid,
+      parent: null,
+      children: [],
+      id: createNodeId(`chain__${chain.chainId}`),
+      internal: {
+        type: "Chain",
+        content: JSON.stringify(chain),
+        contentDigest: createContentDigest(chain),
+      },
+    };
+    createNode(node);
+  });
 };
 
 // https://github.com/WalletConnect/walletconnect-monorepo/issues/584
