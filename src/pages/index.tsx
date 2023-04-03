@@ -55,15 +55,17 @@ const IndexPage = () => {
   }, {});
 
   return (
-    <Web3Provider>
+    <>
       <Seo />
-      <SearchProvider>
-        <Box py="4" px="8">
-          <Header />
-          <ChainList chains={chains} icons={icons} />
-        </Box>
-      </SearchProvider>
-    </Web3Provider>
+      <Web3Provider>
+        <SearchProvider>
+          <Box py="4" px="8">
+            <Header />
+            <ChainList chains={chains} icons={icons} />
+          </Box>
+        </SearchProvider>
+      </Web3Provider>
+    </>
   );
 };
 
