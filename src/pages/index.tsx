@@ -32,7 +32,7 @@ const IndexPage = () => {
       allImageSharp {
         nodes {
           id
-          gatsbyImageData(width: 40)
+          gatsbyImageData(width: 40, placeholder: NONE)
           original {
             width
             height
