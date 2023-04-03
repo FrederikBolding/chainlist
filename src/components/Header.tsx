@@ -14,7 +14,7 @@ import { Search } from "./Search";
 import { FaGithub } from "react-icons/fa";
 import { AddIcon } from "@chakra-ui/icons";
 
-export const Header = (props) => {
+export const Header = () => {
   const { handleConnect, isConnected, address } = useContext(Web3Context);
   return (
     <Flex
@@ -23,7 +23,7 @@ export const Header = (props) => {
       justifyContent="space-between"
     >
       <Heading>Chainlist</Heading>
-      <Search {...props} />
+      <Search />
       <Flex>
         <Tooltip label="Add Network">
           <Link

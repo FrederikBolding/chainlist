@@ -1,11 +1,21 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { SearchContext } from "../context/SearchContext";
+import { useDebounce } from "../hooks/useDebounce";
 
-export const Search = ({ setSearchQuery, searchQuery }) => {
-  const handleChange = (event) => setSearchQuery(event.target.value);
+export const Search = () => {
+  const { setQuery } = useContext(SearchContext);
+  const [inputQuery, setInputQuery] = useState("");
+  const handleChange = (event) => setInputQuery(event.target.value);
+  const debouncedQuery = useDebounce(inputQuery, 300);
+
+  useEffect(() => {
+    setQuery(debouncedQuery);
+  }, [debouncedQuery]);
+
   return (
-    <InputGroup size="lg" mx={{ base: 0, md: "5" }} mb={{ base: "2", md: 0}}>
+    <InputGroup size="lg" mx={{ base: 0, md: "5" }} mb={{ base: "2", md: 0 }}>
       <InputLeftElement
         pointerEvents="none"
         children={<SearchIcon color="gray.300" />}
@@ -13,7 +23,7 @@ export const Search = ({ setSearchQuery, searchQuery }) => {
       <Input
         type="text"
         placeholder="Search"
-        value={searchQuery}
+        value={inputQuery}
         onChange={handleChange}
       />
     </InputGroup>
