@@ -13,6 +13,7 @@ import { DarkModeToggle } from "./DarkModeToggle";
 import { Search } from "./Search";
 import { FaGithub } from "react-icons/fa";
 import { AddIcon } from "@chakra-ui/icons";
+import { Filters } from "./Filters";
 
 export const Header = () => {
   const { handleConnect, isConnected, address } = useContext(Web3Context);
@@ -25,6 +26,7 @@ export const Header = () => {
       <Heading>Chainlist</Heading>
       <Search />
       <Flex>
+        <Filters />
         <Tooltip label="Add Network">
           <Link
             href="https://github.com/ethereum-lists/chains/pulls"
@@ -43,7 +45,9 @@ export const Header = () => {
             />
           </Link>
         </Tooltip>
-        <DarkModeToggle size="lg" mr="1" />
+        <Tooltip label="Toggle Dark Mode">
+          <DarkModeToggle size="lg" mr="1" />
+        </Tooltip>
         {!isConnected ? (
           <Button
             w={{ base: "100%", md: "auto" }}
