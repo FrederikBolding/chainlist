@@ -11,15 +11,14 @@ export const ChainList = ({
   chains: (ChainData & { id: string })[];
 }) => {
   const { query } = useContext(SearchContext);
+  const lowerCase = query.toLowerCase();
   const filteredChains =
     query.length > 0
       ? chains.filter(
           (chain) =>
-            chain.name.toLowerCase().includes(query.toLowerCase()) ||
+            chain.name.toLowerCase().includes(lowerCase) ||
             chain.chainId.toString().includes(query) ||
-            chain.nativeCurrency.symbol
-              .toLowerCase()
-              .includes(query.toLowerCase())
+            chain.nativeCurrency.symbol.toLowerCase().includes(lowerCase)
         )
       : chains;
 

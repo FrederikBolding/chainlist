@@ -8,7 +8,7 @@ export const Search = () => {
   const { setQuery } = useContext(SearchContext);
   const [inputQuery, setInputQuery] = useState("");
   const handleChange = (event) => setInputQuery(event.target.value);
-  const debouncedQuery = useDebounce(inputQuery, 300);
+  const debouncedQuery = useDebounce(inputQuery, 250);
 
   useEffect(() => {
     setQuery(debouncedQuery);
