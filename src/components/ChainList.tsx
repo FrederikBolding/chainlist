@@ -9,13 +9,13 @@ export const ChainList = ({
 }: {
   chains: (ChainData & { id: string })[];
 }) => {
-  const { query } = useContext(SearchContext);
+  const { query, showTestnets, showDeprecated } = useContext(SearchContext);
   const lowerCaseQuery = query.toLowerCase();
 
   const handleFiltering = (chain) => {
     const lowerCaseName = chain.name.toLowerCase();
-    const isTestnet = lowerCaseName.includes("testnet");
-    const isDeprecated = chain.status === "deprecated";
+    const isTestnet = !showTestnets && lowerCaseName.includes("testnet");
+    const isDeprecated = !showDeprecated && chain.status === "deprecated";
     if (isTestnet || isDeprecated) {
       return false;
     }

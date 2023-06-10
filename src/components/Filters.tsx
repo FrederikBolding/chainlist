@@ -1,36 +1,82 @@
 import {
-  Button,
+  Box,
+  FormControl,
+  FormLabel,
   IconButton,
-  Link,
   Popover,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverContent,
-  PopoverHeader,
   PopoverTrigger,
   Portal,
+  Switch,
   Tooltip,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { FaFilter } from "react-icons/fa";
+import { SearchContext } from "../context/SearchContext";
 
-export const Filters = () => (
-  <Popover>
-    <PopoverTrigger>
+export const Filters = () => {
+  const { showTestnets, showDeprecated, setShowTestnets, setShowDeprecated } =
+    useContext(SearchContext);
+
+  const handleTestnetsToggle = () => {
+    setShowTestnets((state) => !state);
+  };
+
+  const handleDeprecatedToggle = () => {
+    setShowDeprecated((state) => !state);
+  };
+
+  return (
+    <Popover>
       <Tooltip label="Filters">
-        <IconButton size="lg" aria-label="Filters" icon={<FaFilter />} mr="1" />
+        <PopoverTrigger>
+          <IconButton
+            size="lg"
+            aria-label="Filters"
+            icon={<FaFilter />}
+            mr="1"
+          />
+        </PopoverTrigger>
       </Tooltip>
-    </PopoverTrigger>
-    <Portal>
-      <PopoverContent>
-        <PopoverArrow />
-        <PopoverHeader>Header</PopoverHeader>
-        <PopoverCloseButton />
-        <PopoverBody>
-          <Button colorScheme="blue">Button</Button>
-        </PopoverBody>
-      </PopoverContent>
-    </Portal>
-  </Popover>
-);
+      <Portal>
+        <PopoverContent maxW="220px">
+          <PopoverArrow />
+          <PopoverBody>
+            <FormControl
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              mb="2"
+            >
+              <FormLabel htmlFor="testnet-switch" mb="0">
+                Show Testnets
+              </FormLabel>
+              <Switch
+                id="testnet-switch"
+                onChange={handleTestnetsToggle}
+                value={showTestnets}
+              />
+            </FormControl>
+
+            <FormControl
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <FormLabel htmlFor="deprecated-switch" mb="0">
+                Show Deprecated
+              </FormLabel>
+              <Switch
+                id="deprecated-switch"
+                onChange={handleDeprecatedToggle}
+                value={showDeprecated}
+              />
+            </FormControl>
+          </PopoverBody>
+        </PopoverContent>
+      </Portal>
+    </Popover>
+  );
+};

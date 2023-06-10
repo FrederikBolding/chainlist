@@ -45,9 +45,7 @@ export const Header = () => {
             />
           </Link>
         </Tooltip>
-        <Tooltip label="Toggle Dark Mode">
-          <DarkModeToggle size="lg" mr="1" />
-        </Tooltip>
+        <DarkModeToggle size="lg" mr="1" />
         {!isConnected ? (
           <Button
             w={{ base: "100%", md: "auto" }}
