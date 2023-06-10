@@ -54,5 +54,6 @@
     "gatsby-source-filesystem": "^4.9.0",
     "gatsby-transformer-json": "^4.9.0",
     "typescript": "^4.5.5"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }
