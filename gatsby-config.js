@@ -2,7 +2,7 @@
 module.exports = {
   siteMetadata: {
     title: `Chainlist`,
-    siteUrl: `https://evm-chainlist.netlify.app/`,
+    siteUrl: `https://chainlist.wtf/`,
     author: "@frederikbolding",
     description:
       "A list of EVM-based chains that also allows you to add chains to your favorite Web3 wallet.",

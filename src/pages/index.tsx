@@ -5,6 +5,7 @@ import { ChainList } from "../components/ChainList";
 import { Header } from "../components/Header";
 import { Seo } from "../components/SEO";
 import { Web3Provider } from "../context/Web3Context";
+import { SearchProvider } from "../context/SearchContext";
 
 const IndexPage = () => {
   const rawData = useStaticQuery(graphql`
@@ -52,27 +53,19 @@ const IndexPage = () => {
       [node.parent.name]: node.gatsbyImageData,
     };
   }, {});
-  const [searchQuery, setSearchQuery] = useState("");
-  const filteredChains =
-    searchQuery.length > 0
-      ? chains.filter(
-          (chain) =>
-            chain.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            chain.chainId.toString().includes(searchQuery) ||
-            chain.nativeCurrency.symbol
-              .toLowerCase()
-              .includes(searchQuery.toLowerCase())
-        )
-      : chains;
 
   return (
-    <Web3Provider>
+    <>
       <Seo />
-      <Box py="4" px="8">
-        <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-        <ChainList chains={filteredChains} icons={icons} />
-      </Box>
-    </Web3Provider>
+      <Web3Provider>
+        <SearchProvider>
+          <Box py="4" px="8">
+            <Header />
+            <ChainList chains={chains} icons={icons} />
+          </Box>
+        </SearchProvider>
+      </Web3Provider>
+    </>
   );
 };
 
