@@ -26,7 +26,7 @@
     "assert": "^2.0.0",
     "crypto-browserify": "^3.12.0",
     "framer-motion": "^6.2.8",
-    "gatsby": "^4.25.4",
+    "gatsby": "^4.25.7",
     "gatsby-plugin-emotion": "^7.9.0",
     "gatsby-plugin-image": "^2.24.0",
     "gatsby-plugin-netlify": "^4.1.0",
