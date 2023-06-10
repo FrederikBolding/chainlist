@@ -1,5 +1,4 @@
 import { GatsbyNode } from "gatsby";
-import path from "path";
 import webpack from "webpack";
 import { createRemoteFileNode } from "gatsby-source-filesystem";
 import fetch from "node-fetch";
@@ -74,14 +73,14 @@ export const onCreateWebpackConfig: GatsbyNode["onCreateWebpackConfig"] = ({
     ],
     resolve: {
       fallback: {
-        util: path.resolve(`./node_modules/util/`),
-        url: path.resolve(`./node_modules/url/`),
-        assert: path.resolve(`./node_modules/assert/`),
-        crypto: path.resolve(`./node_modules/crypto-browserify`),
-        os: path.resolve(`./node_modules/os-browserify/browser`),
-        https: path.resolve(`./node_modules/https-browserify`),
-        http: path.resolve(`./node_modules/stream-http`),
-        stream: path.resolve(`./node_modules/stream-browserify`),
+        assert: require.resolve('assert/'),
+        crypto: require.resolve('crypto-browserify/'),
+        http: require.resolve('stream-http/'),
+        https: require.resolve('https-browserify/'),
+        os: require.resolve('os-browserify/browser'),
+        stream: require.resolve('stream-browserify/'),
+        url: require.resolve('url/'),
+        util: require.resolve('util/')
       },
     },
   });
