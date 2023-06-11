@@ -29,9 +29,7 @@ const IndexPage = () => {
             standard
           }
           status
-          features {
-            name
-          }
+          faucets
         }
       }
       allImageSharp {

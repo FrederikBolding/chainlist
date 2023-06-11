@@ -14,7 +14,7 @@ export const ChainList = ({
 
   const handleFiltering = (chain) => {
     const lowerCaseName = chain.name.toLowerCase();
-    const isTestnet = !showTestnets && lowerCaseName.includes("testnet");
+    const isTestnet = !showTestnets && (chain.faucets.length > 0 || lowerCaseName.includes("testnet"));
     const isDeprecated = !showDeprecated && chain.status === "deprecated";
     if (isTestnet || isDeprecated) {
       return false;
@@ -30,8 +30,6 @@ export const ChainList = ({
   };
 
   const filteredChains = chains.filter(handleFiltering);
-
-  console.log(filteredChains.length);
 
   return (
     <SimpleGrid minChildWidth="300px" spacing={4}>
