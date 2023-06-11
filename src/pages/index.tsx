@@ -28,6 +28,8 @@ const IndexPage = () => {
             name
             standard
           }
+          status
+          faucets
         }
       }
       allImageSharp {
@@ -46,13 +48,16 @@ const IndexPage = () => {
     }
   `);
 
-  const chains = rawData.allChain.nodes;
+  const rawChains = rawData.allChain.nodes;
   const icons = rawData.allImageSharp.nodes.reduce((acc, node) => {
-    return {
-      ...acc,
-      [node.parent.name]: node.gatsbyImageData,
-    };
+    acc[node.parent.name] = node.gatsbyImageData;
+    return acc;
   }, {});
+
+  const chains = rawChains.reduce((acc, chain, idx) => {
+    acc[idx].icon = icons[chain.icon];
+    return acc;
+  }, rawChains);
 
   return (
     <>
@@ -61,7 +66,7 @@ const IndexPage = () => {
         <SearchProvider>
           <Box py="4" px="8">
             <Header />
-            <ChainList chains={chains} icons={icons} />
+            <ChainList chains={chains} />
           </Box>
         </SearchProvider>
       </Web3Provider>
