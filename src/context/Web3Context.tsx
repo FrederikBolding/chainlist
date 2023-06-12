@@ -1,6 +1,6 @@
 import WalletConnectProvider from "@walletconnect/ethereum-provider";
 import React, { createContext, useEffect, useState } from "react";
-import { Web3Provider as EthersWeb3 } from "@ethersproject/providers";
+import { BrowserProvider as EthersWeb3 } from "ethers";
 import { ChainData } from "../types/chain";
 
 // Hack to fix build
@@ -61,9 +61,11 @@ export const Web3Provider = ({ children }) => {
 
   const isConnected = web3 !== undefined;
   const provider = isConnected && new EthersWeb3(web3, "any");
-  const signer = provider && provider.getSigner();
 
   const handleAddChain = (chain: ChainData) => {
+    if (!provider) {
+      return;
+    }
     provider.send("wallet_addEthereumChain", [
       {
         chainId: `0x${chain.chainId.toString(16)}`,
@@ -76,7 +78,12 @@ export const Web3Provider = ({ children }) => {
   };
 
   const updateInfo = () => {
-    signer.getAddress().then((res) => setAddress(res));
+    if (!provider) {
+      return;
+    }
+    provider
+      .getSigner()
+      .then((signer) => signer.getAddress().then((res) => setAddress(res)));
   };
 
   useEffect(() => {
