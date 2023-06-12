@@ -1,4 +1,4 @@
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletConnectProvider from "@walletconnect/ethereum-provider";
 import React, { createContext, useEffect, useState } from "react";
 import { Web3Provider as EthersWeb3 } from "@ethersproject/providers";
 import { ChainData } from "../types/chain";
@@ -6,14 +6,42 @@ import { ChainData } from "../types/chain";
 // Hack to fix build
 const Web3Modal = typeof window !== `undefined` ? require("web3modal") : null;
 
+class WalletConnectWrapper {
+  #provider: WalletConnectProvider | null = null;
+  constructor() {}
+
+  async enable() {
+    const provider = await WalletConnectProvider.init({
+      projectId: "d0868226f60fea6aaad64b3f6a3dc3a7",
+      chains: [1],
+      showQrModal: true,
+      methods: ["wallet_addEthereumChain"],
+    });
+
+    this.#provider = provider;
+
+    await provider.connect();
+  }
+
+  on(event: any, listener: any) {
+    this.#provider!.on(event, listener);
+  }
+
+  async request(args: any) {
+    console.log("Request", args);
+    return this.#provider!.request(args);
+  }
+}
+
 export const Web3Context = createContext({});
 
 export const Web3Provider = ({ children }) => {
   const [web3, setWeb3] = useState<any | undefined>(undefined);
   const [address, setAddress] = useState(undefined);
+
   const providerOptions = {
     walletconnect: {
-      package: WalletConnectProvider,
+      package: WalletConnectWrapper,
       options: {
         infuraId: "854b581018fe44a59897b53ee6a19551",
       },
@@ -23,7 +51,7 @@ export const Web3Provider = ({ children }) => {
   const web3Modal =
     Web3Modal &&
     new Web3Modal.default({
-      cacheProvider: true, // optional
+      cacheProvider: false, // optional
       providerOptions, // required
     });
 
