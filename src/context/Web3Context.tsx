@@ -1,22 +1,50 @@
-import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletConnectProvider from "@walletconnect/ethereum-provider";
 import React, { createContext, useEffect, useState } from "react";
-import { Web3Provider as EthersWeb3 } from "@ethersproject/providers";
+import { BrowserProvider as EthersWeb3 } from "ethers";
 import { ChainData } from "../types/chain";
 
 // Hack to fix build
 const Web3Modal = typeof window !== `undefined` ? require("web3modal") : null;
+
+// Wrapper to continue use of Web3Modal with new WC version
+class WalletConnectWrapper {
+  #provider: WalletConnectProvider | null = null;
+  constructor() {}
+
+  async enable() {
+    const provider = await WalletConnectProvider.init({
+      projectId: "d0868226f60fea6aaad64b3f6a3dc3a7",
+      chains: [1],
+      showQrModal: true,
+      methods: ["wallet_addEthereumChain"],
+    });
+
+    this.#provider = provider;
+
+    await provider.connect();
+  }
+
+  on(event: any, listener: any) {
+    this.#provider!.on(event, listener);
+  }
+
+  async request(args: any) {
+    return this.#provider!.request(args);
+  }
+}
 
 export const Web3Context = createContext({});
 
 export const Web3Provider = ({ children }) => {
   const [web3, setWeb3] = useState<any | undefined>(undefined);
   const [address, setAddress] = useState(undefined);
+
   const providerOptions = {
     walletconnect: {
-      package: WalletConnectProvider,
+      package: WalletConnectWrapper,
       options: {
-        infuraId: "854b581018fe44a59897b53ee6a19551",
-      },
+        infuraId: 'foo' // This doesnt seem to be used
+      }
     },
   };
 
@@ -33,9 +61,11 @@ export const Web3Provider = ({ children }) => {
 
   const isConnected = web3 !== undefined;
   const provider = isConnected && new EthersWeb3(web3, "any");
-  const signer = provider && provider.getSigner();
 
   const handleAddChain = (chain: ChainData) => {
+    if (!provider) {
+      return;
+    }
     provider.send("wallet_addEthereumChain", [
       {
         chainId: `0x${chain.chainId.toString(16)}`,
@@ -48,7 +78,12 @@ export const Web3Provider = ({ children }) => {
   };
 
   const updateInfo = () => {
-    signer.getAddress().then((res) => setAddress(res));
+    if (!provider) {
+      return;
+    }
+    provider
+      .getSigner()
+      .then((signer) => signer.getAddress().then((res) => setAddress(res)));
   };
 
   useEffect(() => {
