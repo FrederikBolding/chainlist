@@ -48,7 +48,7 @@ export const Web3Provider = ({ children }) => {
   const web3Modal =
     Web3Modal &&
     new Web3Modal.default({
-      cacheProvider: false, // optional
+      cacheProvider: true, // optional
       providerOptions, // required
     });
 
