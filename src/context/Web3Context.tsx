@@ -42,6 +42,9 @@ export const Web3Provider = ({ children }) => {
   const providerOptions = {
     walletconnect: {
       package: WalletConnectWrapper,
+      options: {
+        infuraId: 'foo' // This doesnt seem to be used
+      }
     },
   };
 
