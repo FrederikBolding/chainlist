@@ -6,6 +6,7 @@ import { ChainData } from "../types/chain";
 // Hack to fix build
 const Web3Modal = typeof window !== `undefined` ? require("web3modal") : null;
 
+// Wrapper to continue use of Web3Modal with new WC version
 class WalletConnectWrapper {
   #provider: WalletConnectProvider | null = null;
   constructor() {}
@@ -28,7 +29,6 @@ class WalletConnectWrapper {
   }
 
   async request(args: any) {
-    console.log("Request", args);
     return this.#provider!.request(args);
   }
 }
@@ -42,9 +42,6 @@ export const Web3Provider = ({ children }) => {
   const providerOptions = {
     walletconnect: {
       package: WalletConnectWrapper,
-      options: {
-        infuraId: "854b581018fe44a59897b53ee6a19551",
-      },
     },
   };
 
