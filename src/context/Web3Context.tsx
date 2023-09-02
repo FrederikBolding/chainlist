@@ -66,13 +66,16 @@ export const Web3Provider = ({ children }) => {
     if (!provider) {
       return;
     }
+    const { nativeCurrency, explorers } = chain;
+    const blockExplorerUrls =
+      explorers && explorers.length > 0 ? explorers.map((e) => e.url) : null;
     provider.send("wallet_addEthereumChain", [
       {
         chainId: `0x${chain.chainId.toString(16)}`,
         chainName: chain.name,
-        nativeCurrency: chain.nativeCurrency,
+        nativeCurrency,
         rpcUrls: chain.rpc,
-        blockExplorerUrls: chain.explorers?.map((e) => e.url),
+        blockExplorerUrls,
       },
     ]);
   };

@@ -1,5 +1,3 @@
-const path = require("path");
-const webpack = require("webpack");
 const { createRemoteFileNode } = require("gatsby-source-filesystem");
 const fetch = require("node-fetch");
 
@@ -42,21 +40,23 @@ exports.sourceNodes = async ({
     return acc;
   }, Promise.resolve({}));
 
-  chains.forEach((chain) => {
-    const icon = chain.icon;
-    const iconCid = iconFiles[icon]?.name;
-    const node = {
-      ...chain,
-      icon: iconCid,
-      parent: null,
-      children: [],
-      id: createNodeId(`chain__${chain.chainId}`),
-      internal: {
-        type: "Chain",
-        content: JSON.stringify(chain),
-        contentDigest: createContentDigest(chain),
-      },
-    };
-    createNode(node);
-  });
+  chains
+    .filter((chain) => chain.rpc.length > 0)
+    .forEach((chain) => {
+      const icon = chain.icon;
+      const iconCid = iconFiles[icon]?.name;
+      const node = {
+        ...chain,
+        icon: iconCid,
+        parent: null,
+        children: [],
+        id: createNodeId(`chain__${chain.chainId}`),
+        internal: {
+          type: "Chain",
+          content: JSON.stringify(chain),
+          contentDigest: createContentDigest(chain),
+        },
+      };
+      createNode(node);
+    });
 };
