@@ -56,7 +56,7 @@ export const Filters = () => {
               <Switch
                 id="testnet-switch"
                 onChange={handleTestnetsToggle}
-                value={showTestnets}
+                isChecked={showTestnets}
               />
             </FormControl>
 
@@ -71,7 +71,7 @@ export const Filters = () => {
               <Switch
                 id="deprecated-switch"
                 onChange={handleDeprecatedToggle}
-                value={showDeprecated}
+                isChecked={showDeprecated}
               />
             </FormControl>
           </PopoverBody>
