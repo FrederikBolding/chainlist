@@ -48,7 +48,9 @@ const IndexPage = () => {
     }
   `);
 
-  const rawChains = rawData.allChain.nodes;
+  const rawChains = rawData.allChain.nodes.sort(
+    (a, b) => a.chainId - b.chainId
+  );
   const icons = rawData.allImageSharp.nodes.reduce((acc, node) => {
     acc[node.parent.name] = node.gatsbyImageData;
     return acc;
