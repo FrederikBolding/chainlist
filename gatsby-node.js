@@ -19,20 +19,44 @@ exports.sourceNodes = async ({
     (response) => response.json()
   );
 
+  async function fetchIcon(name, file) {
+    const cid = file.url.slice(7);
+
+    // Try iconsDownload first as it is way faster.
+    try {
+      return await createRemoteFileNode({
+        url: `https://chainid.network/iconsDownload/${cid}`,
+        createNode,
+        createNodeId,
+        store,
+        cache,
+        reporter,
+        name,
+        ext: `.${file.format}`,
+      });
+    } catch {}
+
+    // Fallback to IPFS
+    try {
+      return await createRemoteFileNode({
+        url: `https://ipfs.io/ipfs/${cid}`,
+        createNode,
+        createNodeId,
+        store,
+        cache,
+        reporter,
+        name,
+        ext: `.${file.format}`,
+      });
+    } catch {}
+
+    return null;
+  }
+
   const iconFiles = await icons.reduce(async (previousPromise, icon) => {
     const iconName = icon.name;
     const iconFile = icon.icons?.[0];
-    const cid = iconFile.url.slice(7);
-    const result = await createRemoteFileNode({
-      url: `https://chainid.network/iconsDownload/${cid}`,
-      createNode,
-      createNodeId,
-      store,
-      cache,
-      reporter,
-      name: iconName,
-      ext: `.${iconFile.format}`,
-    }).catch(() => null);
+    const result = await fetchIcon(iconName, iconFile);
     const acc = await previousPromise;
     if (result) {
       acc[iconName] = result;
