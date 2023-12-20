@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Center,
   Flex,
@@ -12,7 +11,7 @@ import {
 import React, { useContext } from "react";
 import { Web3Context } from "../context/Web3Context";
 import { ChainData } from "../types/chain";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { ChainIcon } from "./ChainIcon";
 
 export const Chain = ({
   name,
@@ -61,7 +60,7 @@ export const Chain = ({
         </Flex>
         {icon && (
           <Flex>
-            <GatsbyImage objectFit="scale-down" image={icon} alt={name} />
+            <ChainIcon name={name} icon={icon} />
           </Flex>
         )}
       </Flex>
