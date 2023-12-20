@@ -45,6 +45,14 @@ const IndexPage = () => {
           }
         }
       }
+      allFile(filter: { extension: { eq: "svg" } }) {
+        nodes {
+          id
+          name
+          extension
+          publicURL
+        }
+      }
     }
   `);
 
@@ -56,8 +64,13 @@ const IndexPage = () => {
     return acc;
   }, {});
 
+  const svgIcons = rawData.allFile.nodes.reduce((acc, node) => {
+    acc[node.name] = node.publicURL;
+    return acc;
+  }, {});
+
   const chains = rawChains.reduce((acc, chain, idx) => {
-    acc[idx].icon = icons[chain.icon];
+    acc[idx].icon = icons[chain.icon] ?? svgIcons[chain.icon];
     return acc;
   }, rawChains);
 

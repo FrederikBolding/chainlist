@@ -1,7 +1,9 @@
+import { IGatsbyImageData } from "gatsby-plugin-image";
+
 export interface ChainData {
   name: string;
   chain: string;
-  icon: string;
+  icon: string | IGatsbyImageData;
   rpc: string[];
   chainId: number;
   nativeCurrency: ChainCurrency;
