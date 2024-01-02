@@ -4,8 +4,12 @@ import { ChainData } from "../types/chain";
 import { Image } from "@chakra-ui/react";
 
 export const ChainIcon = ({ icon, name }: Pick<ChainData, "icon" | "name">) =>
-  typeof icon === "string" ? (
-    <Image src={icon} width="40px" />
+  icon.childImageSharp ? (
+    <GatsbyImage
+      objectFit="scale-down"
+      image={icon.childImageSharp.gatsbyImageData}
+      alt={name}
+    />
   ) : (
-    <GatsbyImage objectFit="scale-down" image={icon} alt={name} />
+    <Image src={icon.publicURL} width="40px" />
   );
