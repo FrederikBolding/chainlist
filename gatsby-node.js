@@ -69,16 +69,14 @@ exports.sourceNodes = async ({
     .forEach((chain) => {
       const icon = chain.icon;
       const iconFileId = iconFiles[icon]?.id;
+      const chainData = { ...chain, icon: iconFileId };
       const node = {
-        ...chain,
-        icon: iconFileId,
-        parent: null,
-        children: [],
-        id: createNodeId(`chain__${chain.chainId}`),
+        ...chainData,
+        id: createNodeId(`chain__${chainData.chainId}`),
         internal: {
           type: "Chain",
-          content: JSON.stringify(chain),
-          contentDigest: createContentDigest(chain),
+          content: JSON.stringify(chainData),
+          contentDigest: createContentDigest(chainData),
         },
       };
       createNode(node);
