@@ -68,10 +68,10 @@ exports.sourceNodes = async ({
     .filter((chain) => chain.rpc.length > 0)
     .forEach((chain) => {
       const icon = chain.icon;
-      const iconCid = iconFiles[icon]?.name;
+      const iconFileId = iconFiles[icon]?.id;
       const node = {
         ...chain,
-        icon: iconCid,
+        icon: iconFileId,
         parent: null,
         children: [],
         id: createNodeId(`chain__${chain.chainId}`),
@@ -83,4 +83,14 @@ exports.sourceNodes = async ({
       };
       createNode(node);
     });
+};
+
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  const typeDefs = `
+    type Chain implements Node {
+      icon: File @link(from: "icon")
+    }
+  `;
+  createTypes(typeDefs);
 };

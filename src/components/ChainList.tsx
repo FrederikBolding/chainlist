@@ -1,20 +1,52 @@
 import { SimpleGrid } from "@chakra-ui/react";
 import React, { useContext } from "react";
-import { ChainData } from "../types/chain";
 import { Chain } from "./Chain";
 import { SearchContext } from "../context/SearchContext";
+import { graphql, useStaticQuery } from "gatsby";
 
-export const ChainList = ({
-  chains,
-}: {
-  chains: (ChainData & { id: string })[];
-}) => {
+export const ChainList = () => {
+  const data = useStaticQuery(graphql`
+    {
+      allChain(sort: [{ chainId: ASC }]) {
+        nodes {
+          id
+          name
+          chain
+          chainId
+          rpc
+          icon {
+            publicURL
+            childImageSharp {
+              gatsbyImageData(width: 40, placeholder: NONE)
+            }
+          }
+          nativeCurrency {
+            decimals
+            name
+            symbol
+          }
+          explorers {
+            url
+            name
+            standard
+          }
+          status
+          faucets
+        }
+      }
+    }
+  `);
+
+  const chains = data.allChain.nodes;
+
   const { query, showTestnets, showDeprecated } = useContext(SearchContext);
   const lowerCaseQuery = query.toLowerCase();
 
   const handleFiltering = (chain) => {
     const lowerCaseName = chain.name.toLowerCase();
-    const isTestnet = !showTestnets && (chain.faucets.length > 0 || lowerCaseName.includes("testnet"));
+    const isTestnet =
+      !showTestnets &&
+      (chain.faucets.length > 0 || lowerCaseName.includes("testnet"));
     const isDeprecated = !showDeprecated && chain.status === "deprecated";
     if (isTestnet || isDeprecated) {
       return false;

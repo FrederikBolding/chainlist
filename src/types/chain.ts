@@ -3,7 +3,10 @@ import { IGatsbyImageData } from "gatsby-plugin-image";
 export interface ChainData {
   name: string;
   chain: string;
-  icon: string | IGatsbyImageData;
+  icon: {
+    publicURL: string;
+    childImageSharp: { gatsbyImageData: IGatsbyImageData };
+  };
   rpc: string[];
   chainId: number;
   nativeCurrency: ChainCurrency;
