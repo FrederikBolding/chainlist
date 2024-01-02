@@ -1,11 +1,10 @@
-import { Box } from "@chakra-ui/react";
 import { graphql, useStaticQuery } from "gatsby";
-import React, { useState } from "react";
+import React from "react";
 import { ChainList } from "../components/ChainList";
-import { Header } from "../components/Header";
 import { Seo } from "../components/SEO";
 import { Web3Provider } from "../context/Web3Context";
 import { SearchProvider } from "../context/SearchContext";
+import { Layout } from "../components/Layout";
 
 const IndexPage = () => {
   const rawData = useStaticQuery(graphql`
@@ -79,10 +78,9 @@ const IndexPage = () => {
       <Seo />
       <Web3Provider>
         <SearchProvider>
-          <Box py="4" px="8">
-            <Header />
+          <Layout>
             <ChainList chains={chains} />
-          </Box>
+          </Layout>
         </SearchProvider>
       </Web3Provider>
     </>
