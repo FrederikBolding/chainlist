@@ -72,6 +72,8 @@ exports.sourceNodes = async ({
       const chainData = { ...chain, icon: iconFileId };
       const node = {
         ...chainData,
+        parent: null,
+        children: [],
         id: createNodeId(`chain__${chainData.chainId}`),
         internal: {
           type: "Chain",
