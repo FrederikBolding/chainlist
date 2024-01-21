@@ -6,23 +6,16 @@ on:
       destination_dir:
         required: true
         type: string
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
 jobs:
-  publish-environment:
+  publish:
     name: Publish to GitHub Pages
     runs-on: ubuntu-latest
-    environment: github-pages
     permissions:
       contents: write
     steps:
       - name: Ensure `destination_dir` is not empty
         if: ${{ inputs.destination_dir == '' }}
-        run: exit 1
-      - name: Ensure `publish_dir` is not empty
-        if: ${{ inputs.publish_dir == '' }}
         run: exit 1
       - uses: actions/checkout@v3
       - name: Setup Node

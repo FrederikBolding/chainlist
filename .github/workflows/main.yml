@@ -32,5 +32,3 @@ jobs:
     uses: ./.github/workflows/publish.yml
     with:
       destination_dir: ./
-    secrets:
-      PUBLISH_DOCS_TOKEN: ${{ secrets.PUBLISH_DOCS_TOKEN }}
