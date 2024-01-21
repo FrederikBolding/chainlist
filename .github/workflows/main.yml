@@ -1,0 +1,34 @@
+name: Main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check-workflows:
+    name: Check workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download actionlint
+        id: download-actionlint
+        run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/7fdc9630cc360ea1a469eed64ac6d78caeda1234/scripts/download-actionlint.bash) 1.6.23
+        shell: bash
+      - name: Check workflow files
+        run: ${{ steps.download-actionlint.outputs.executable }} -color
+        shell: bash
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+
+  publish-to-gh-pages:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    name: Publish to the `gh-pages` branch
+    permissions:
+      contents: write
+    uses: ./.github/workflows/publish.yml
+    with:
+      destination_dir: ./
