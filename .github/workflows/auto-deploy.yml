@@ -17,14 +17,9 @@ jobs:
         shell: bash
         run: ./scripts/check-deploy.sh
 
-  build:
+  deploy:
     needs: check
     if: needs.check.outputs.deploy == 'true'
-    name: Build
-    uses: ./.github/workflows/build.yml
-
-  deploy:
-    needs: build
     name: Publish to the `gh-pages` branch
     permissions:
       contents: write
