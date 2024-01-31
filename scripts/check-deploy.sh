@@ -3,8 +3,7 @@ shouldDeploy=$(curl -s https://api.github.com/repos/ethereum-lists/chains/commit
 
 if [ $shouldDeploy -eq 0 ]
 then
-  echo "Deploying..."
-  curl -X POST -d '{}' https://api.netlify.com/build_hooks/${BUILD_HOOK}
+  echo "deploy=true" >> "$GITHUB_OUTPUT"
 else
-  echo "No deploy needed"
+  echo "deploy=false" >> "$GITHUB_OUTPUT"
 fi

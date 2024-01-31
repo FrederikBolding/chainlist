@@ -2,16 +2,32 @@ name: Auto Deploy
 
 on:
   schedule:
-    - cron:  '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.set-output.outputs.deploy }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Check if deployment is needed
+        id: set-output
         shell: bash
-        env:
-          BUILD_HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
         run: ./scripts/check-deploy.sh
+
+  build:
+    needs: check
+    if: needs.check.outputs.deploy == 'true'
+    name: Build
+    uses: ./.github/workflows/build.yml
+
+  deploy:
+    needs: build
+    name: Publish to the `gh-pages` branch
+    permissions:
+      contents: write
+    uses: ./.github/workflows/publish.yml
+    with:
+      destination_dir: ./
