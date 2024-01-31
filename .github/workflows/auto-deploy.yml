@@ -3,7 +3,6 @@ name: Auto Deploy
 on:
   schedule:
     - cron: "0 0 * * *"
-  pull_request:
 
 jobs:
   check:
