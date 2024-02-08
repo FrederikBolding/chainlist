@@ -19,7 +19,7 @@ export const SearchProvider = ({ children }) => {
 
   const [query, setQuery] = useState("");
   const [showTestnets, setShowTestnets] = useState(
-    defaults?.showTestnets ?? false
+    defaults?.showTestnets ?? true
   );
   const [showDeprecated, setShowDeprecated] = useState(
     defaults?.showDeprecated ?? false
