@@ -14,6 +14,7 @@ import { Search } from "./Search";
 import { FaGithub } from "react-icons/fa";
 import { AddIcon } from "@chakra-ui/icons";
 import { Filters } from "./Filters";
+import { Link as GatsbyLink } from "gatsby";
 
 export const Header = ({ showSearch = true, showFilters = true }) => {
   const { handleConnect, isConnected, address } = useContext(Web3Context);
@@ -33,7 +34,9 @@ export const Header = ({ showSearch = true, showFilters = true }) => {
       width="100%"
       zIndex="sticky"
     >
-      <Heading>Chainlist</Heading>
+      <GatsbyLink to="/">
+        <Heading as="h1">Chainlist</Heading>
+      </GatsbyLink>
       {showSearch && <Search />}
       <Flex>
         {showFilters && <Filters />}

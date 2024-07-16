@@ -65,6 +65,8 @@ exports.sourceNodes = async ({
   }, Promise.resolve({}));
 
   chains
+    // Filter out non HTTP(S) RPC URLs
+    .map((chain) => ({ ...chain, rpc: chain.rpc.filter(rpc => rpc.startsWith('http://') || rpc.startsWith('https://'))}))
     .filter((chain) => chain.rpc.length > 0)
     .forEach((chain) => {
       const icon = chain.icon;

@@ -3,7 +3,7 @@ import { GatsbyImage } from "gatsby-plugin-image";
 import { ChainData } from "../types/chain";
 import { Image } from "@chakra-ui/react";
 
-export const ChainIcon = ({ icon, name }: Pick<ChainData, "icon" | "name">) =>
+export const ChainIcon = ({ icon, name, width = "40px" }: Pick<ChainData, "icon" | "name"> & { width?: string; }) =>
   icon.childImageSharp ? (
     <GatsbyImage
       objectFit="scale-down"
@@ -11,5 +11,5 @@ export const ChainIcon = ({ icon, name }: Pick<ChainData, "icon" | "name">) =>
       alt={name}
     />
   ) : (
-    <Image src={icon.publicURL} width="40px" />
+    <Image src={icon.publicURL} width={width} />
   );

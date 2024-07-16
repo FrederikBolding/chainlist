@@ -9,23 +9,39 @@ import {
   StatNumber,
   Heading,
   Text,
+  Divider,
 } from "@chakra-ui/react";
 import { graphql } from "gatsby";
 import { Seo } from "../../components/SEO";
 import { SearchProvider } from "../../context/SearchContext";
 import { Web3Context, Web3Provider } from "../../context/Web3Context";
-import { Header } from "../../components/Header";
 import { ChainIcon } from "../../components/ChainIcon";
 import { Layout } from "../../components/Layout";
+import { ExternalLink } from "../../components/ExternalLink";
+import { RpcTable } from "../../components/RpcTable";
 
 const ChainPage = ({ data }) => {
-  const { name, chainId, nativeCurrency, icon, explorers, rpc, slip44 } =
-    data.chain;
+  const {
+    name,
+    chainId,
+    nativeCurrency,
+    icon,
+    explorers,
+    rpc,
+    slip44,
+    infoURL,
+    status,
+  } = data.chain;
 
   const { isConnected, handleConnect, handleAddChain } =
     useContext(Web3Context);
+
   const handleAddChainClick = () => {
-    handleAddChain({ name, chainId, nativeCurrency, ...rest });
+    handleAddChain({ name, chainId, nativeCurrency, rpc, explorers });
+  };
+
+  const handleRpcClick = (rpc) => {
+    handleAddChain({ name, chainId, nativeCurrency, rpc: [rpc], explorers });
   };
 
   return (
@@ -34,17 +50,15 @@ const ChainPage = ({ data }) => {
       <Web3Provider>
         <SearchProvider>
           <Layout headerProps={{ showSearch: false, showFilters: false }}>
-            <Flex flexDirection="column">
-              <Flex justifyContent="space-between" alignItems="center" mb="2">
+            <Flex flexDirection="column" mt="8">
+              <Flex justifyContent="space-between" alignItems="center">
                 <Flex alignItems="center">
                   {icon && (
-                    <Flex mr="2">
-                      <ChainIcon name={name} icon={icon} />
+                    <Flex mr="6">
+                      <ChainIcon name={name} icon={icon} width="60px" />
                     </Flex>
                   )}
-                  <Heading as="h3" size="lg">
-                    {name}
-                  </Heading>
+                  <Heading size="2xl">{name}</Heading>
                 </Flex>
                 {!isConnected ? (
                   <Button onClick={handleConnect}>Connect Wallet</Button>
@@ -52,6 +66,7 @@ const ChainPage = ({ data }) => {
                   <Button onClick={handleAddChainClick}>Add Chain</Button>
                 )}
               </Flex>
+              <Divider my="8" />
               <StatGroup>
                 <Stat>
                   <StatLabel>Chain ID</StatLabel>
@@ -62,22 +77,34 @@ const ChainPage = ({ data }) => {
                   <StatNumber fontSize="md">{nativeCurrency.symbol}</StatNumber>
                 </Stat>
                 <Stat>
-                  <StatLabel>SLIP44</StatLabel>
-                  <StatNumber fontSize="md">{slip44}</StatNumber>
+                  <StatLabel>Status</StatLabel>
+                  <StatNumber fontSize="md" textTransform="capitalize">
+                    {status ?? "Active"}
+                  </StatNumber>
                 </Stat>
+                {infoURL && (
+                  <Stat>
+                    <StatLabel>Info</StatLabel>
+                    <StatNumber fontSize="md">
+                      <ExternalLink href={infoURL}>{infoURL}</ExternalLink>
+                    </StatNumber>
+                  </Stat>
+                )}
+                {explorers && (
+                  <Stat>
+                    <StatLabel>Explorers</StatLabel>
+                    <StatNumber fontSize="md">
+                      {explorers.map((explorer) => (
+                        <ExternalLink href={explorer.url}>
+                          {explorer.url}
+                        </ExternalLink>
+                      ))}
+                    </StatNumber>
+                  </Stat>
+                )}
               </StatGroup>
-              <Text fontWeight="semibold" mt="2">
-                RPC URLs
-              </Text>
-              {rpc.map((rpcUrl) => (
-                <Text>{rpcUrl}</Text>
-              ))}
-              <Text fontWeight="semibold" mt="2">
-                Explorers
-              </Text>
-              {explorers.map((explorer) => (
-                <Text>{explorer.url}</Text>
-              ))}
+              <Divider my="8" />
+              <RpcTable rpcs={rpc} handleRpcClick={handleRpcClick} />
             </Flex>
           </Layout>
         </SearchProvider>
@@ -97,7 +124,7 @@ export const query = graphql`
       icon {
         publicURL
         childImageSharp {
-          gatsbyImageData(width: 40, placeholder: NONE)
+          gatsbyImageData(width: 60, placeholder: NONE)
         }
       }
       nativeCurrency {
@@ -113,6 +140,7 @@ export const query = graphql`
       status
       faucets
       slip44
+      infoURL
     }
   }
 `;
