@@ -47,68 +47,64 @@ const ChainPage = ({ data }) => {
   return (
     <>
       <Seo />
-      <Web3Provider>
-        <SearchProvider>
-          <Layout headerProps={{ showSearch: false, showFilters: false }}>
-            <Flex flexDirection="column" mt="8">
-              <Flex justifyContent="space-between" alignItems="center">
-                <Flex alignItems="center">
-                  {icon && (
-                    <Flex mr="6">
-                      <ChainIcon name={name} icon={icon} width="60px" />
-                    </Flex>
-                  )}
-                  <Heading size="2xl">{name}</Heading>
+      <Layout headerProps={{ showSearch: false, showFilters: false }}>
+        <Flex flexDirection="column" mt="8">
+          <Flex justifyContent="space-between" alignItems="center">
+            <Flex alignItems="center">
+              {icon && (
+                <Flex mr="6">
+                  <ChainIcon name={name} icon={icon} width="60px" />
                 </Flex>
-                {!isConnected ? (
-                  <Button onClick={handleConnect}>Connect Wallet</Button>
-                ) : (
-                  <Button onClick={handleAddChainClick}>Add Chain</Button>
-                )}
-              </Flex>
-              <Divider my="8" />
-              <StatGroup>
-                <Stat>
-                  <StatLabel>Chain ID</StatLabel>
-                  <StatNumber fontSize="md">{chainId}</StatNumber>
-                </Stat>
-                <Stat>
-                  <StatLabel>Currency</StatLabel>
-                  <StatNumber fontSize="md">{nativeCurrency.symbol}</StatNumber>
-                </Stat>
-                <Stat>
-                  <StatLabel>Status</StatLabel>
-                  <StatNumber fontSize="md" textTransform="capitalize">
-                    {status ?? "Active"}
-                  </StatNumber>
-                </Stat>
-                {infoURL && (
-                  <Stat>
-                    <StatLabel>Info</StatLabel>
-                    <StatNumber fontSize="md">
-                      <ExternalLink href={infoURL}>{infoURL}</ExternalLink>
-                    </StatNumber>
-                  </Stat>
-                )}
-                {explorers && (
-                  <Stat>
-                    <StatLabel>Explorers</StatLabel>
-                    <StatNumber fontSize="md">
-                      {explorers.map((explorer) => (
-                        <ExternalLink href={explorer.url}>
-                          {explorer.url}
-                        </ExternalLink>
-                      ))}
-                    </StatNumber>
-                  </Stat>
-                )}
-              </StatGroup>
-              <Divider my="8" />
-              <RpcTable rpcs={rpc} handleRpcClick={handleRpcClick} />
+              )}
+              <Heading size="2xl">{name}</Heading>
             </Flex>
-          </Layout>
-        </SearchProvider>
-      </Web3Provider>
+            {!isConnected ? (
+              <Button onClick={handleConnect}>Connect Wallet</Button>
+            ) : (
+              <Button onClick={handleAddChainClick}>Add Chain</Button>
+            )}
+          </Flex>
+          <Divider my="8" />
+          <StatGroup>
+            <Stat>
+              <StatLabel>Chain ID</StatLabel>
+              <StatNumber fontSize="md">{chainId}</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Currency</StatLabel>
+              <StatNumber fontSize="md">{nativeCurrency.symbol}</StatNumber>
+            </Stat>
+            <Stat>
+              <StatLabel>Status</StatLabel>
+              <StatNumber fontSize="md" textTransform="capitalize">
+                {status ?? "Active"}
+              </StatNumber>
+            </Stat>
+            {infoURL && (
+              <Stat>
+                <StatLabel>Info</StatLabel>
+                <StatNumber fontSize="md">
+                  <ExternalLink href={infoURL}>{infoURL}</ExternalLink>
+                </StatNumber>
+              </Stat>
+            )}
+            {explorers && (
+              <Stat>
+                <StatLabel>Explorers</StatLabel>
+                <StatNumber fontSize="md">
+                  {explorers.map((explorer) => (
+                    <ExternalLink href={explorer.url}>
+                      {explorer.url}
+                    </ExternalLink>
+                  ))}
+                </StatNumber>
+              </Stat>
+            )}
+          </StatGroup>
+          <Divider my="8" />
+          <RpcTable rpcs={rpc} handleRpcClick={handleRpcClick} />
+        </Flex>
+      </Layout>
     </>
   );
 };
