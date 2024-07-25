@@ -1,26 +1,27 @@
 import React, { useContext } from "react";
 import {
-  Box,
   Button,
   Flex,
   StatGroup,
   StatLabel,
   Stat,
-  StatNumber,
   Heading,
-  Text,
   Divider,
+  Text,
 } from "@chakra-ui/react";
 import { graphql } from "gatsby";
 import { Seo } from "../../components/SEO";
-import { SearchProvider } from "../../context/SearchContext";
-import { Web3Context, Web3Provider } from "../../context/Web3Context";
+import { Web3Context } from "../../context/Web3Context";
 import { ChainIcon } from "../../components/ChainIcon";
 import { Layout } from "../../components/Layout";
 import { ExternalLink } from "../../components/ExternalLink";
 import { RpcTable } from "../../components/RpcTable";
+import { RedFlagBadge } from "../../components/RedFlagBadge";
+import { StatusBadge } from "../../components/StatusBadge";
+import { StatValue } from "../../components/StatValue";
+import { ChainData } from "../../types/chain";
 
-const ChainPage = ({ data }) => {
+const ChainPage = ({ data }: { data: { chain: ChainData } }) => {
   const {
     name,
     chainId,
@@ -28,7 +29,7 @@ const ChainPage = ({ data }) => {
     icon,
     explorers,
     rpc,
-    slip44,
+    redFlags,
     infoURL,
     status,
   } = data.chain;
@@ -40,7 +41,7 @@ const ChainPage = ({ data }) => {
     handleAddChain({ name, chainId, nativeCurrency, rpc, explorers });
   };
 
-  const handleRpcClick = (rpc) => {
+  const handleRpcClick = (rpc: string) => {
     handleAddChain({ name, chainId, nativeCurrency, rpc: [rpc], explorers });
   };
 
@@ -65,39 +66,44 @@ const ChainPage = ({ data }) => {
             )}
           </Flex>
           <Divider my="8" />
-          <StatGroup>
+          <StatGroup flexDirection={["column", null, "row"]} gap={[2, null, 0]}>
             <Stat>
               <StatLabel>Chain ID</StatLabel>
-              <StatNumber fontSize="md">{chainId}</StatNumber>
+              <StatValue>
+                <Text>{chainId}</Text>
+              </StatValue>
             </Stat>
             <Stat>
               <StatLabel>Currency</StatLabel>
-              <StatNumber fontSize="md">{nativeCurrency.symbol}</StatNumber>
+              <StatValue>
+                <Text>{nativeCurrency.symbol}</Text>
+              </StatValue>
             </Stat>
             <Stat>
-              <StatLabel>Status</StatLabel>
-              <StatNumber fontSize="md" textTransform="capitalize">
-                {status ?? "Active"}
-              </StatNumber>
+              <StatLabel mb="1.5">Status</StatLabel>
+              <StatValue>
+                <StatusBadge status={status} />
+                <RedFlagBadge redFlags={redFlags} />
+              </StatValue>
             </Stat>
             {infoURL && (
               <Stat>
                 <StatLabel>Info</StatLabel>
-                <StatNumber fontSize="md">
+                <StatValue>
                   <ExternalLink href={infoURL}>{infoURL}</ExternalLink>
-                </StatNumber>
+                </StatValue>
               </Stat>
             )}
             {explorers && (
               <Stat>
                 <StatLabel>Explorers</StatLabel>
-                <StatNumber fontSize="md">
+                <StatValue>
                   {explorers.map((explorer) => (
                     <ExternalLink href={explorer.url}>
                       {explorer.url}
                     </ExternalLink>
                   ))}
-                </StatNumber>
+                </StatValue>
               </Stat>
             )}
           </StatGroup>
@@ -135,7 +141,7 @@ export const query = graphql`
       }
       status
       faucets
-      slip44
+      redFlags
       infoURL
     }
   }
