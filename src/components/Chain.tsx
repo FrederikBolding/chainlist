@@ -23,9 +23,17 @@ export const Chain = ({
 }: ChainData) => {
   const { isConnected, handleConnect, handleAddChain } =
     useContext(Web3Context);
-  const handleAddChainClick = () => {
+
+  const handleConnectClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    handleConnect();
+  };
+
+  const handleAddChainClick = (event: React.MouseEvent) => {
+    event.preventDefault();
     handleAddChain({ name, chainId, nativeCurrency, ...rest });
   };
+
   return (
     <Link to={`/chain/${chainId}`}>
       <Flex
@@ -68,7 +76,7 @@ export const Chain = ({
         </Flex>
         <Center mt="auto">
           {!isConnected ? (
-            <Button onClick={handleConnect}>Connect Wallet</Button>
+            <Button onClick={handleConnectClick}>Connect</Button>
           ) : (
             <Button onClick={handleAddChainClick}>Add Chain</Button>
           )}

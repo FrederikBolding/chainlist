@@ -29,7 +29,7 @@ export const RpcTable = ({ rpcs, handleRpcClick }) => {
               <Td pl="0">{rpcUrl}</Td>
               <Td pr="0" textAlign="end">
                 {!isConnected ? (
-                  <Button onClick={handleConnect}>Connect Wallet</Button>
+                  <Button onClick={handleConnect}>Connect</Button>
                 ) : (
                   <Button onClick={() => handleRpcClick(rpcUrl)}>
                     Add Chain

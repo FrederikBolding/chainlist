@@ -65,7 +65,7 @@ export const Header = ({ showSearch = true, showFilters = true }) => {
             size="lg"
             onClick={handleConnect}
           >
-            Connect Wallet
+            Connect
           </Button>
         ) : (
           <Button size="lg" w={{ base: "100%", md: "auto" }}>

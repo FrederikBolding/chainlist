@@ -49,18 +49,27 @@ const ChainPage = ({ data }: { data: { chain: ChainData } }) => {
     <>
       <Seo />
       <Layout headerProps={{ showSearch: false, showFilters: false }}>
-        <Flex flexDirection="column" mt="8">
-          <Flex justifyContent="space-between" alignItems="center">
-            <Flex alignItems="center">
+        <Flex flexDirection="column" mt={["0", null, "8"]}>
+          <Flex
+            flexDirection={["column", null, "row"]}
+            justifyContent="space-between"
+            alignItems="center"
+            gap="6"
+          >
+            <Flex
+              flexDirection={["column", null, "row"]}
+              alignItems="center"
+              gap="6"
+            >
               {icon && (
-                <Flex mr="6">
+                <Flex>
                   <ChainIcon name={name} icon={icon} width="60px" />
                 </Flex>
               )}
               <Heading size="2xl">{name}</Heading>
             </Flex>
             {!isConnected ? (
-              <Button onClick={handleConnect}>Connect Wallet</Button>
+              <Button onClick={handleConnect}>Connect</Button>
             ) : (
               <Button onClick={handleAddChainClick}>Add Chain</Button>
             )}
