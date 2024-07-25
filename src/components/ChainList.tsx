@@ -64,7 +64,7 @@ export const ChainList = () => {
   const filteredChains = chains.filter(handleFiltering);
 
   return (
-    <SimpleGrid minChildWidth="300px" spacing={4}>
+    <SimpleGrid minChildWidth="300px" spacing={4} mb="8">
       {filteredChains.map((c) => (
         <Chain key={c.id} {...c} />
       ))}
