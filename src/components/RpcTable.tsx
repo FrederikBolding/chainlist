@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
+  Skeleton,
   Table,
   TableContainer,
   Tbody,
@@ -19,8 +20,8 @@ async function checkRpc(chainId: number, rpc: string) {
     const provider = new JsonRpcProvider(rpc, chainId, { staticNetwork: true });
     const blockNumber = await provider.getBlockNumber();
     return { blockNumber, latency: Date.now() - now };
-  } catch {
-    return null;
+  } catch (error) {
+    return { error };
   }
 }
 
@@ -63,12 +64,24 @@ export const RpcTable = ({
           </Tr>
         </Thead>
         <Tbody>
-          {mergedRpcs.map(({ rpcUrl, blockNumber, latency }) => {
+          {mergedRpcs.map(({ rpcUrl, blockNumber, latency, error }) => {
             return (
               <Tr key={rpcUrl}>
                 <Td pl="0">{rpcUrl}</Td>
-                <Td>{blockNumber ?? "?"}</Td>
-                <Td>{latency ?? "?"} ms</Td>
+                <Td>
+                  {blockNumber || error ? (
+                    blockNumber ?? "Unavailable"
+                  ) : (
+                    <Skeleton height="24px" />
+                  )}
+                </Td>
+                <Td>
+                  {latency || error ? (
+                    <>{latency ?? "?"} ms</>
+                  ) : (
+                    <Skeleton height="24px" />
+                  )}
+                </Td>
                 <Td pr="0" textAlign="end">
                   {!isConnected ? (
                     <Button onClick={handleConnect}>Connect</Button>
