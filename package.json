@@ -24,7 +24,7 @@
     "@walletconnect/modal": "^2.4.5",
     "ethers": "^6.5.1",
     "framer-motion": "^10.12.16",
-    "gatsby": "^5.10.0",
+    "gatsby": "^5.13.7",
     "gatsby-plugin-emotion": "^8.10.0",
     "gatsby-plugin-image": "^3.10.0",
     "gatsby-plugin-netlify": "^5.1.0",
