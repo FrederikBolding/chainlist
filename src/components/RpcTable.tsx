@@ -19,8 +19,7 @@ async function checkRpc(chainId: number, rpc: string) {
     const provider = new JsonRpcProvider(rpc, chainId, { staticNetwork: true });
     const blockNumber = await provider.getBlockNumber();
     return { blockNumber, latency: Date.now() - now };
-  } catch (error) {
-    console.error(error);
+  } catch {
     return null;
   }
 }
