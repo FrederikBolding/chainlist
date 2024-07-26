@@ -17,7 +17,7 @@ import { FaFilter } from "react-icons/fa";
 import { SearchContext } from "../context/SearchContext";
 
 export const Filters = () => {
-  const { showTestnets, showDeprecated, setShowTestnets, setShowDeprecated } =
+  const { showTestnets, showDeprecated, showFlagged, setShowTestnets, setShowDeprecated, setShowFlagged } =
     useContext(SearchContext);
 
   const handleTestnetsToggle = () => {
@@ -26,6 +26,10 @@ export const Filters = () => {
 
   const handleDeprecatedToggle = () => {
     setShowDeprecated((state) => !state);
+  };
+
+  const handleFlaggedToggle = () => {
+    setShowFlagged((state) => !state);
   };
 
   return (
@@ -64,6 +68,7 @@ export const Filters = () => {
               display="flex"
               alignItems="center"
               justifyContent="space-between"
+              mb="2"
             >
               <FormLabel htmlFor="deprecated-switch" mb="0">
                 Show Deprecated
@@ -74,6 +79,22 @@ export const Filters = () => {
                 isChecked={showDeprecated}
               />
             </FormControl>
+
+            <FormControl
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <FormLabel htmlFor="flagged-switch" mb="0">
+                Show Flagged
+              </FormLabel>
+              <Switch
+                id="flagged-switch"
+                onChange={handleFlaggedToggle}
+                isChecked={showFlagged}
+              />
+            </FormControl>
+
           </PopoverBody>
         </PopoverContent>
       </Portal>
