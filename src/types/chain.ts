@@ -11,6 +11,9 @@ export interface ChainData {
   chainId: number;
   nativeCurrency: ChainCurrency;
   explorers?: BlockExplorer[];
+  status?: string;
+  redFlags?: string[];
+  infoURL?: string;
 }
 
 export interface ChainCurrency {
