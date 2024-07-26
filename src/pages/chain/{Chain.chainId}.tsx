@@ -117,7 +117,7 @@ const ChainPage = ({ data }: { data: { chain: ChainData } }) => {
             )}
           </StatGroup>
           <Divider my="8" />
-          <RpcTable rpcs={rpc} handleRpcClick={handleRpcClick} />
+          <RpcTable chainId={chainId} rpcs={rpc} handleRpcClick={handleRpcClick} />
         </Flex>
       </Layout>
     </>
