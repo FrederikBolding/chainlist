@@ -32,6 +32,7 @@ export const ChainList = () => {
           }
           status
           faucets
+          redFlags
         }
       }
     }
@@ -39,7 +40,7 @@ export const ChainList = () => {
 
   const chains = data.allChain.nodes;
 
-  const { query, showTestnets, showDeprecated } = useContext(SearchContext);
+  const { query, showTestnets, showDeprecated, showFlagged } = useContext(SearchContext);
   const lowerCaseQuery = query.toLowerCase();
 
   const handleFiltering = (chain) => {
@@ -48,7 +49,8 @@ export const ChainList = () => {
       !showTestnets &&
       (chain.faucets.length > 0 || lowerCaseName.includes("testnet"));
     const isDeprecated = !showDeprecated && chain.status === "deprecated";
-    if (isTestnet || isDeprecated) {
+    const isFlagged = !showFlagged && chain.redFlags?.length > 0;
+    if (isTestnet || isDeprecated || isFlagged) {
       return false;
     }
     if (query.length > 0) {
