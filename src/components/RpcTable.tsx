@@ -14,14 +14,23 @@ import { Web3Context } from "../context/Web3Context";
 import { JsonRpcProvider } from "ethers";
 import { ChainData } from "../types/chain";
 
-async function checkRpc(chainId: number, rpc: string) {
+interface RpcResult {
+  rpcUrl: string;
+  blockNumber?: number;
+  latency?: number;
+  error?: unknown;
+}
+
+async function checkRpc(chainId: number, rpcUrl: string): Promise<RpcResult> {
   try {
     const now = Date.now();
-    const provider = new JsonRpcProvider(rpc, chainId, { staticNetwork: true });
+    const provider = new JsonRpcProvider(rpcUrl, chainId, {
+      staticNetwork: true,
+    });
     const blockNumber = await provider.getBlockNumber();
-    return { blockNumber, latency: Date.now() - now };
+    return { rpcUrl, blockNumber, latency: Date.now() - now };
   } catch (error) {
-    return { error };
+    return { rpcUrl, error };
   }
 }
 
@@ -29,18 +38,25 @@ export const RpcTable = ({
   chainId,
   rpcs,
   handleRpcClick,
-}: Pick<ChainData, "chainId"> & { rpcs: ChainData["rpc"] }) => {
+}: Pick<ChainData, "chainId"> & {
+  rpcs: ChainData["rpc"];
+  handleRpcClick: (rpc: string) => void;
+}) => {
   const { isConnected, handleConnect } = useContext(Web3Context);
-  const [rpcResults, setRpcResults] = useState(null);
+  const [rpcResults, setRpcResults] = useState<RpcResult[] | null>(null);
 
   useEffect(() => {
-    Promise.all(rpcs.map((rpc) => checkRpc(chainId, rpc))).then(setRpcResults);
+    rpcs.forEach((rpc) =>
+      checkRpc(chainId, rpc).then((result) => {
+        setRpcResults((state) => [...(state ?? []), result]);
+      })
+    );
   }, []);
 
   const mergedRpcs = rpcs
-    .map((rpcUrl, index) => {
-      const rpcResult = rpcResults?.[index] ?? {};
-      return { rpcUrl, ...rpcResult };
+    .map((rpcUrl) => {
+      const rpcResult = rpcResults?.find((result) => result.rpcUrl === rpcUrl);
+      return rpcResult ?? { rpcUrl };
     })
     .sort((a, b) => {
       if (!a.latency) {
