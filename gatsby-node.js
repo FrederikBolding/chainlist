@@ -1,5 +1,7 @@
 const { createRemoteFileNode } = require("gatsby-source-filesystem");
 const fetch = require("node-fetch");
+const probe = require("probe-image-size");
+const { createReadStream } = require("fs");
 
 exports.sourceNodes = async ({
   actions,
@@ -22,11 +24,21 @@ exports.sourceNodes = async ({
   async function fetchIcon(name, file) {
     const cid = file.url.slice(7);
 
+    const wrappedCreateNode = async (node, args) => {
+      const stream = createReadStream(node.absolutePath);
+      // Validate image type to prevent issues with invalid images
+      const imageSize = await probe(stream);
+      if (imageSize.type !== node.ext.slice(1)) {
+        throw new Error("Invalid image");
+      }
+      return await createNode(node, args);
+    };
+
     // Try iconsDownload first as it is way faster.
     try {
       return await createRemoteFileNode({
         url: `https://chainid.network/iconsDownload/${cid}`,
-        createNode,
+        createNode: wrappedCreateNode,
         createNodeId,
         store,
         cache,
@@ -40,7 +52,7 @@ exports.sourceNodes = async ({
     try {
       return await createRemoteFileNode({
         url: `https://ipfs.io/ipfs/${cid}`,
-        createNode,
+        createNode: wrappedCreateNode,
         createNodeId,
         store,
         cache,
@@ -66,7 +78,12 @@ exports.sourceNodes = async ({
 
   chains
     // Filter out non HTTP(S) RPC URLs
-    .map((chain) => ({ ...chain, rpc: chain.rpc.filter(rpc => rpc.startsWith('http://') || rpc.startsWith('https://'))}))
+    .map((chain) => ({
+      ...chain,
+      rpc: chain.rpc.filter(
+        (rpc) => rpc.startsWith("http://") || rpc.startsWith("https://")
+      ),
+    }))
     .filter((chain) => chain.rpc.length > 0)
     .forEach((chain) => {
       const icon = chain.icon;
