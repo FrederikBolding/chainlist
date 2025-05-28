@@ -1,0 +1,20 @@
+{
+  "name": "Onepiece Testnet",
+  "shortName": "onepiecetest",
+  "chain": "Onepiece",
+  "icon": "ethereum",
+  "rpc": [],
+  "faucets": [],
+  "nativeCurrency": {
+    "name": "Onepiece Token",
+    "symbol": "OPT",
+    "decimals": 18
+  },
+  "infoURL": "",
+  "chainId": 221194,
+  "networkId": 221194,
+  "slip44": 1,
+  "ens": false,
+  "explorers": [],
+  "testnet": true
+}
