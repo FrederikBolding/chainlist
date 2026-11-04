@@ -34,6 +34,12 @@ exports.sourceNodes = async ({
       return await createNode(node, args);
     };
 
+    // GitHub Pages gzips iconsDownload. got reports the gzip Content-Length
+    // as progress.total, then the decompressed size. gatsby-core-utils keeps
+    // the larger total, so a PNG that grows under gzip is deleted and the
+    // empty catch below stores no icon. Ask for the raw file.
+    const httpHeaders = { "Accept-Encoding": "identity" };
+
     // Try iconsDownload first as it is way faster.
     try {
       return await createRemoteFileNode({
@@ -43,6 +49,7 @@ exports.sourceNodes = async ({
         store,
         cache,
         reporter,
+        httpHeaders,
         name,
         ext: `.${file.format}`,
       });
@@ -57,6 +64,7 @@ exports.sourceNodes = async ({
         store,
         cache,
         reporter,
+        httpHeaders,
         name,
         ext: `.${file.format}`,
       });
